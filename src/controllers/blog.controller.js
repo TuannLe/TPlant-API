@@ -26,7 +26,7 @@ export const blogController = {
         );
     },
     update: (req, res) => {
-        const articles_id = req.params.articles_id;
+        const article_id = req.params.article_id;
         multer(cloudinary.uploader.upload(req.file.path,
             {
                 allowed_formats: ['png', 'jpg', 'jpeg', 'svg', 'ico', 'jfif', 'wedp']
@@ -38,7 +38,7 @@ export const blogController = {
                     const images = result.url;
                     const title = req.body.title;
                     const content = req.body.content;
-                    Blog.update(title, content, images, articles_id, (result) => {
+                    Blog.update(title, content, images, article_id, (result) => {
                         res.send(result);
                     });
                 }
@@ -46,8 +46,8 @@ export const blogController = {
         );
     },
     delete: (req, res) => {
-        const articles_id = req.params.articles_id;
-        Blog.delete(articles_id, (result) => {
+        const article_id = req.params.article_id;
+        Blog.delete(article_id, (result) => {
             res.send(result);
         });
     },
@@ -59,5 +59,11 @@ export const blogController = {
         } catch (error) {
             res.status(500).json(error)
         }
+    },
+    getByID: (req, res) => {
+        const article_id = req.params.article_id;
+        Blog.getById(article_id, (result) => {
+            res.send(result);
+        });
     }
 }

@@ -12,12 +12,12 @@ const User = (blog) => {
     this.created_at = blog.created_at;
 };
 
-User.register = (email, password, created_at, callback) => {
+User.register = (email, password, username, created_at, callback) => {
     const sqlString = `INSERT INTO 
-                            accounts(email, password, status, role, created_at) 
+                            accounts(email, password, username, status, role, created_at) 
                         VALUES 
-                            (?,?,1,0,?)`;
-    db.query(sqlString, [email, password, created_at], (err, result) => {
+                            (?,?,?,1,0,?)`;
+    db.query(sqlString, [email, password, username, created_at], (err, result) => {
         if (err) {
             return callback(err);
         }
