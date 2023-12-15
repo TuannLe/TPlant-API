@@ -1,4 +1,5 @@
-import Blog from '../models/blog.model.js'
+
+import { EmotionBlog, Blog } from '../models/blog.model.js'
 import multer from "multer"
 import cloudinary from "../../upload.js"
 
@@ -63,6 +64,19 @@ export const blogController = {
     getByID: (req, res) => {
         const article_id = req.params.article_id;
         Blog.getById(article_id, (result) => {
+            res.send(result);
+        });
+    },
+    getPopular: (req, res) => {
+        Blog.getPopular((result) => {
+            res.send(result);
+        });
+    },
+    handleEmotion: (req, res) => {
+        const article_id = req.body.article_id;
+        const account_id = req.body.account_id;
+        const emotion = req.body.emotion;
+        EmotionBlog.emotionChange(article_id, account_id, emotion, (result) => {
             res.send(result);
         });
     }
