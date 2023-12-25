@@ -6,6 +6,7 @@ import blogRouter from './src/routers/blog.router.js'
 import userRouter from './src/routers/user.router.js'
 import commentRouter from './src/routers/comment.router.js'
 import diseaseRouter from './src/routers/disease.router.js'
+import { verifyToken } from './src/common/authMiddleware.js'
 
 dotenv.config()
 const app = express();
@@ -17,9 +18,9 @@ app.use(bodyParser.json());
 app.use(cors())
 
 app.use('/users', userRouter)
-app.use('/blogs', blogRouter)
-app.use('/comments', commentRouter)
-app.use('/diseases', diseaseRouter)
+app.use('/blogs', verifyToken, blogRouter)
+app.use('/comments', verifyToken, commentRouter)
+app.use('/diseases', verifyToken, diseaseRouter)
 
 app.listen(PORT);
 

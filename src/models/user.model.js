@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import db from '../common/connect.js'
 
 const User = (blog) => {
@@ -34,21 +35,27 @@ User.register = (email, password, username, created_at, callback) => {
         }
     });
 };
-
 User.login = (email, password, callback) => {
-    const sqlString = "SELECT * FROM `accounts` WHERE `email` = ? AND `password` = ?";
-    db.query(sqlString, [email, password], (err, result) => {
+    const sqlString = "SELECT * FROM `accounts` WHERE `email` = ?";
+    db.query(sqlString, [email], async (err, result) => {
         if (err) {
-            return callback(err);
+            callback(null);
         }
         if (result.length > 0) {
-            callback(result);
+            const validPassword = await bcrypt.compare(
+                password,
+                result[0].password
+            )
+            if (!validPassword) {
+                callback(null);
+            } else {
+                callback(result);
+            }
         } else {
-            callback("Login fail!");
+            callback(null);
         }
     });
 };
-
 User.update = (username, address, account_id, callback) => {
     const sqlString = `UPDATE accounts
                             SET username=?, address=?
@@ -60,7 +67,6 @@ User.update = (username, address, account_id, callback) => {
         callback('Update account successfully');
     });
 };
-
 User.changePassword = (old_password, new_password, email, callback) => {
     const sqlString = "SELECT * FROM `accounts` WHERE `email` = ? AND `password` = ?";
     db.query(sqlString, [email, old_password], (err, result) => {

@@ -21,7 +21,6 @@ Comment.create = (account_id, article_id, comment, images, created_at, callback)
         callback('Create comment successfully');
     });
 };
-
 Comment.getAll = (article_id, callback) => {
     const sqlString = `SELECT article_comment.ar_comment_id,article_comment.account_id, article_comment.comment, article_comment.images, article_comment.created_at, accounts.username AS 'created_by'
     FROM article_comment
@@ -34,7 +33,6 @@ Comment.getAll = (article_id, callback) => {
         callback(result);
     });
 };
-
 Comment.update = (comment, images, ar_comment_id, callback) => {
     const sqlString = `UPDATE article_comment
                         SET 
@@ -47,7 +45,6 @@ Comment.update = (comment, images, ar_comment_id, callback) => {
         callback('Update comment successfully');
     });
 }
-
 Comment.delete = (ar_comment_id, callback) => {
     const sqlString = `DELETE FROM article_comment WHERE ar_comment_id = ?`;
     db.query(sqlString, ar_comment_id, (err, result) => {

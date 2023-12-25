@@ -1,20 +1,29 @@
+import bcrypt from 'bcrypt';
 import User from '../models/user.model.js'
+import { createToken } from '../common/JWT.js'
 
 export const userController = {
-    register: (req, res) => {
+    register: async (req, res) => {
         const email = req.body.email;
-        const password = req.body.password;
         const username = req.body.username;
         const created_at = new Date()
+        const salt = await bcrypt.genSalt(10)
+        const password = await bcrypt.hash(req.body.password, salt)
         User.register(email, password, username, created_at, (result) => {
             res.send(result);
         });
     },
-    login: (req, res) => {
+    login: async (req, res) => {
         const email = req.body.email;
-        const password = req.body.password;
-        User.login(email, password, (result) => {
-            res.send(result);
+        const password = req.body.password
+        User.login(email, password, async (result) => {
+            if (result) {
+                const token = await createToken(result)
+                const { password, ...others } = result[0]
+                res.send({ ...others, token })
+            } else {
+                res.send("Login fail");
+            }
         });
     },
     update: (req, res) => {

@@ -15,7 +15,6 @@ export const EmotionBlog = (emotionBlog) => {
     this.emotion = emotionBlog.emotion;
 }
 
-
 Blog.create = (title, content, images, created_at, created_by, callback) => {
     const sqlString = `INSERT INTO 
                             articles(title, content, images, created_at, created_by) 
@@ -28,7 +27,6 @@ Blog.create = (title, content, images, created_at, created_by, callback) => {
         callback('Create blog successfully');
     });
 };
-
 Blog.update = (title, content, images, article_id, callback) => {
     const sqlString = `UPDATE articles
                         SET 
@@ -41,7 +39,6 @@ Blog.update = (title, content, images, article_id, callback) => {
         callback('Update blog successfully');
     });
 }
-
 Blog.delete = (article_id, callback) => {
     const sqlString = `DELETE FROM articles WHERE article_id = ?`;
     db.query(sqlString, article_id, (err, result) => {
@@ -51,7 +48,6 @@ Blog.delete = (article_id, callback) => {
         callback('Delete blog successfully');
     });
 }
-
 Blog.getAll = (callback) => {
     const sqlString = `SELECT articles.article_id, articles.title, articles.content, articles.images, articles.created_at, accounts.username AS 'created_by'
     FROM articles
@@ -64,7 +60,6 @@ Blog.getAll = (callback) => {
         callback(result);
     });
 };
-
 Blog.getById = (article_id, callback) => {
     const sqlString = `SELECT * FROM articles WHERE article_id = ?`;
     db.query(sqlString, article_id, (err, result) => {
@@ -78,7 +73,6 @@ Blog.getById = (article_id, callback) => {
         }
     });
 };
-
 Blog.getPopular = (callback) => {
     const sqlString = `SELECT articles.article_id, articles.title, articles.content, articles.images, articles.created_at, accounts.username AS 'created_by'
     FROM articles
@@ -93,7 +87,6 @@ Blog.getPopular = (callback) => {
         callback(result);
     });
 };
-
 EmotionBlog.emotionChange = (article_id, account_id, emotion, callback) => {
     const sqlString = "SELECT * FROM `article_emotions` WHERE `article_id`=? and `account_id`=?";
     db.query(sqlString, [article_id, account_id], (err, result) => {

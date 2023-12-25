@@ -13,19 +13,6 @@ export const Feedback = (blog) => {
     this.rate = blog.rate;
 };
 
-Feedback.create = (disease_id, account_id, rate, callback) => {
-    const sqlString = `INSERT INTO 
-                            disease_feedback(disease_id, account_id, rate) 
-                        VALUES 
-                            (?,?,?)`;
-    db.query(sqlString, [disease_id, account_id, rate], (err, result) => {
-        if (err) {
-            return callback(err);
-        }
-        callback('Feedback successfully');
-    });
-};
-
 Disease.getDetail = (disease_id, callback) => {
     const sqlString = `SELECT diseases.disease_id, diseases.name , diseases.description, diseases.images, AVG(disease_feedback.rate) AS 'avg_rate'
     FROM diseases
@@ -36,5 +23,29 @@ Disease.getDetail = (disease_id, callback) => {
             return callback(err);
         }
         callback(result);
+    });
+};
+Disease.create = (name, description, images, callback) => {
+    const sqlString = `INSERT INTO 
+                            diseases(name, description, images) 
+                        VALUES 
+                            (?,?,?)`;
+    db.query(sqlString, [name, description, images], (err, result) => {
+        if (err) {
+            return callback(err);
+        }
+        callback('Create disease successfully');
+    });
+};
+Feedback.createFeedback = (disease_id, account_id, rate, callback) => {
+    const sqlString = `INSERT INTO 
+                            disease_feedback(disease_id, account_id, rate) 
+                        VALUES 
+                            (?,?,?)`;
+    db.query(sqlString, [disease_id, account_id, rate], (err, result) => {
+        if (err) {
+            return callback(err);
+        }
+        callback('Feedback successfully');
     });
 };
